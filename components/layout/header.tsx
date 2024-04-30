@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   const [isMouseEvent, setIsMouseEvent] = useState(false);
   
    useEffect(() => {
-    const handleScroll = (event) => {
+    const handleScroll = (event:any) => {
       // Verificar se o evento foi acionado por um mouse
       if (event instanceof MouseEvent) {
         // Verificar a direção do scroll (para baixo) e a rota

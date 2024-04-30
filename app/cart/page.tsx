@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils';
 import {   useToast } from '@/components/ui/use-toast';
 
  const Cart: React.FC = () => {
- const [isCheckingOut, setIsCheckingOut] = useState<Boolean>(false)
+ const [isCheckingOut, setIsCheckingOut] = useState<boolean | undefined>(false)
  const { toast } = useToast()
 
  const {cartCount, cartDetails, redirectToCheckout, clearCart , removeItem} = useShoppingCart()
