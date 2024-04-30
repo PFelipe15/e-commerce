@@ -80,10 +80,10 @@ return (
           </CardContent>
         </Card>
       ))}
-    {cartCount > 0 && (
+    {cartCount && cartCount > 0 && (
       <div className="flex justify-center gap-4 mt-4">
         <Button
-          variant="primary"
+          variant="default"
           size="lg"
           onClick={checkout}
           disabled={isCheckingOut}
