@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils"
 import Header from "@/components/layout/header";
 import AppCartProvider from "@/components/shop/app-cart-privider";
 import { Toaster } from "@/components/ui/toaster"
+import Footer from "@/components/layout/footer";
+import Products from "./products/page";
 
   const inter = Inter({ subsets: ["latin"] });
 const oxygem = Oxygen({weight:['300','400','700'],subsets:['latin']})
@@ -29,8 +31,9 @@ export default function RootLayout({
         <AppCartProvider>
           <Header />
           <Toaster />
-
           <main className="flex-grow">{children}</main>
+          <Products/>
+          <Footer/>
         </AppCartProvider>
       </body>
     </html>

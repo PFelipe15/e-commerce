@@ -22,6 +22,11 @@ const config = {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
+
+      backgroundImage: {
+        'banner': "url('./assets/pexels-nietjuh-934063.jpg')",
+        'footer-texture': "url('/img/footer-texture.png')",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -8,7 +8,7 @@ import { useShoppingCart } from 'use-shopping-cart';
 const CartButton = () => {
   const { cartCount, formattedTotalPrice} = useShoppingCart();
   return (
-    <Link href={"/cart"} className="flex items-center justify-center gap-2">
+    <Link href={"/cart"} className="flex items-center justify-center gap-2  ">
       <ShoppingCart className="w-6 h-6 font-extrabold" />({formattedTotalPrice})
       ({cartCount})
     </Link>

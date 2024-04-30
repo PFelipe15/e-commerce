@@ -3,11 +3,12 @@ import stripe from '@/lib/stripe';
  import { Product } from '@/types';
 import Stripe from 'stripe';
 import ProductCard from './product-card';
-
+import PaginationShop from './pagination-shop';
+ 
 async function getProdutcs(){
 try {
     const stripeProducts = await stripe.products.list({
-        limit:9,
+        limit:4,
         expand:["data.default_price"]
     })
 
@@ -33,11 +34,15 @@ const ProductList: React.FC = async  () => {
 
 const products = await getProdutcs()
 return (
-  <section className='grid ga-4 m-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-    {products?.map((p) => (
-      <ProductCard {...p} key={p.id} />
-    ))}
-  </section>
+  <div >
+    <section className="grid gap-4 m-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+      {products?.map((p) => (
+        <ProductCard {...p} key={p.id} />
+      ))}
+
+    </section>
+     
+  </div>
 );
  
 }

@@ -43,28 +43,36 @@ const formatedPrice = formatCurrencyString({
     }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center justify-center min-h-[4rem]">
-          {product.name}
-        </CardTitle>
-        <CardDescription className="relative w-full h-60">
-          <Image src={product.image} sizes="100%" fill className="object-contain" alt={product.name}/>
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="flex items-center justify-center">
-        <p className="min-h-[6rem]">{product.description}</p>
-      </CardContent>
-      <CardFooter className="flex items-center justify-between">
-        <div>
-          <p>Preço</p>
-          <p>{formatedPrice}</p>
-        </div>
-        <Button size={"lg"} variant={"default"} onClick={addToCart}>
-          Comprar
-        </Button>
-      </CardFooter>
-    </Card>
+   
+      <Card className='border-2 border-primary'>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-center min-h-[2rem]  ">
+            {product.name}
+          </CardTitle>
+          <CardDescription className="relative w-full h-60">
+            <Image
+              src={product.image}
+              sizes="100%"
+              fill
+              className="object-contain"
+              alt={product.name}
+            />
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center">
+          <p className="min-h-[6rem]">{product.description}</p>
+        </CardContent>
+        <CardFooter className="flex items-center justify-between">
+          <div>
+            <p>Preço</p>
+            <p>{formatedPrice}</p>
+          </div>
+          <Button size={"lg"} variant={"default"} onClick={addToCart}>
+            Comprar
+          </Button>
+        </CardFooter>
+      </Card>
+    
   );
 };
 
