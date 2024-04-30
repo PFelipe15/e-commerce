@@ -1,9 +1,8 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import CartButton from './Cart-button';
-import Logo from './Logo';
-import UserNav from './User-nav';
- 
+import Logo from './logo';
+import CartButton from './cart-button';
+import UserNav from './user-nav';
  
  
 
