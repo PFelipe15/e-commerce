@@ -44,7 +44,7 @@ const formatedPrice = formatCurrencyString({
 
   return (
    
-      <Card className='border-2 border-primary'>
+      <Card className='border-2 border-primary   max-w-[320px]'>
         <CardHeader>
           <CardTitle className="flex items-center justify-center min-h-[2rem]  ">
             {product.name}
@@ -54,7 +54,7 @@ const formatedPrice = formatCurrencyString({
               src={product.image}
               sizes="100%"
               fill
-              className="object-contain"
+              className="object-cover"
               alt={product.name}
             />
           </CardDescription>

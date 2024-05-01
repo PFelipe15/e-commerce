@@ -24,8 +24,11 @@ const config = {
       },
 
       backgroundImage: {
-        'banner': "url('./assets/pexels-nietjuh-934063.jpg')",
-        'footer-texture': "url('/img/footer-texture.png')",
+        'banner': "url('./assets/pexels-hngstrm-1233648.jpg')",
+        'banner2': "url('./assets/pexels-nietjuh-934063.jpg')",
+        'banner3': "url('./assets/pexels-ron-lach-8386641.jpg')",
+        'banner4': "url('./assets/pexels-liza-summer-6347545.jpg')",
+   
       },
       colors: {
         border: "hsl(var(--border))",
