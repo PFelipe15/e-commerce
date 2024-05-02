@@ -34,9 +34,9 @@ export default function Main() {
     <div>
       <section
         className={`   ${bgStyle} 
-        flex flex-col items-center justify-center    h-full md:h-[70vh] text-white`}
+        flex flex-col items-center justify-center  h-full md:h-[70vh] text-white`}
       >
-        <div className="flex flex-col gap-4 text-black font-extrabold mr-[350px] mb-32 rounded-lg">
+        <div className="flex flex-col gap-4 text-black font-extrabold md:mr-[350px] md:mb-32 rounded-lg">
           <h1
             className={cn(
               alfa_Slab_One.className,
@@ -45,7 +45,7 @@ export default function Main() {
           >
             STILO20
           </h1>
-          <p className="text-base md:text-lg font-sans mb-4 font-normal bg-white text-primary rounded-xl p-2">
+          <p className="text-base md:text-lg font-sans md:mb-4 font-normal bg-white text-primary rounded-xl p-2">
             Descubra as últimas tendências da moda e encontre seus looks
             favoritos!
           </p>
@@ -56,8 +56,6 @@ export default function Main() {
           </Link>
         </div>
       </section>
-
- 
-     </div>
+    </div>
   );
 }

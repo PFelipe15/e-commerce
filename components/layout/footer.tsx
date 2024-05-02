@@ -10,7 +10,7 @@ export default function Footer() {
 
             <div className="text-center md:text-right">
               <p>© 2024 Stilo20. Todos os direitos reservados.</p>
-              <p>Desenvolvido por SeuNome.</p>
+              <p>Desenvolvido por PauloFelipe.</p>
             </div>
           </div>
         </div>
