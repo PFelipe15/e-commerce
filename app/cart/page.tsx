@@ -14,6 +14,7 @@ import { Loader, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {   useToast } from '@/components/ui/use-toast';
+import Link from 'next/link';
 
  const Cart: React.FC = () => {
  const [isCheckingOut, setIsCheckingOut] = useState<boolean | undefined>(false)
@@ -80,7 +81,7 @@ return (
           </CardContent>
         </Card>
       ))}
-    {cartCount && cartCount > 0 && (
+    {cartCount && cartCount > 0 ? (
       <div className="flex justify-center gap-4 mt-4">
         <Button
           variant="default"
@@ -96,7 +97,19 @@ return (
           )}
         </Button>
       </div>
-    )}
+    ) :(
+      <div className="text-center">
+        <p className="text-xl font-semibold mb-4">
+          Que pena, seu carrinho está vazio 😢
+        </p>
+        <Link
+          href={"/products/all"}
+          className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary-dark transition duration-300"
+        >
+          Ver Produtos
+        </Link>
+      </div>
+    )} 
   </section>
 );
 };

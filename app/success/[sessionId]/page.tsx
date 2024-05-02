@@ -1,5 +1,4 @@
 'use client'
-
 import { Check } from "lucide-react"
 import { useEffect } from "react"
 import { useShoppingCart } from "use-shopping-cart"

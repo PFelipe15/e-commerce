@@ -5,6 +5,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from '../ui/button';
 import Image from "next/image";
 import { useToast } from '../ui/use-toast';
+import { ToastAction } from '../ui/toast';
+import Link from 'next/link';
 interface ProductCardProps{
     id: string;
     name: string;
@@ -39,12 +41,20 @@ const formatedPrice = formatCurrencyString({
       toast({
         title: `🎉 ${product.name} Adicionado`,
         description: "Quanto mais, melhor!",
-       });
+        action: (
+          <ToastAction
+            className="bg-primary text-white"
+            altText="Goto schedule to undo"
+          >
+            <Link href={"/cart"} >Ver Carrinho</Link>
+          </ToastAction>
+        ),
+      });
     }
 
   return (
    
-      <Card className='border-2 border-primary   max-w-[320px]'>
+      <Card className='border-2 max-w-[300px] border-primary'>
         <CardHeader>
           <CardTitle className="flex items-center justify-center min-h-[2rem]  ">
             {product.name}
@@ -54,7 +64,7 @@ const formatedPrice = formatCurrencyString({
               src={product.image}
               sizes="100%"
               fill
-              className="object-cover"
+              className="object-contain"
               alt={product.name}
             />
           </CardDescription>

@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import Logo from './logo';
 import CartButton from './cart-button';
 import UserNav from './user-nav';
- 
+import { Button } from '../ui/button';
+import Link from 'next/link';
+  
  
 
 const Header: React.FC = () => {
@@ -13,6 +15,11 @@ const Header: React.FC = () => {
         <Logo />
         <div className="flex items-center justify-center space-x-4">
           <CartButton />
+          <nav>
+            <Link href={"#Localization"}>
+              <Button>Nossas Lojas</Button>
+            </Link>
+          </nav>
           <UserNav />
         </div>
       </div>
