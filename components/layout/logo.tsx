@@ -16,6 +16,7 @@ const Logo = () => {
       src={logo}
       width={50}
       height={50}
+      alt='Logo'
       className='rounded-md'
       />
        <span className="hidden sm:inline-block">Stilo20</span>
