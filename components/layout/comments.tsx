@@ -4,8 +4,17 @@ import { fetchGooglePlaceDetails } from '../../app/api/reviews/fetchReviews';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '../ui/carousel';
 import Image from 'next/image';
 
+
+interface Comment {
+  author_name: string;
+  relative_time_description: string;
+  text: string;
+  rating: number;
+  profile_photo_url: string;
+}
+
 export default function Comments() {
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState<Comment[]>([]);
 
   useEffect(() => {
     async function getComments() {
