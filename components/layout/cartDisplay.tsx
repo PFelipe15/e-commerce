@@ -278,7 +278,7 @@ export default function CartDrawer() {
   const useStore = useCartStore();
 
   const totalPriceAll = useStore.cart.reduce((acc, item) => {
-    return acc + item.price! * item.quantity!;
+    return acc + Number(item.price!) * item.quantity!;
   }, 0);
 
   return (
@@ -323,7 +323,7 @@ export default function CartDrawer() {
                 />
                 <div className="flex  items-center justify-between gap-2 flex-grow ml-4">
                   <p className="text-lg font-semibold">
-                    Preço: {formatPrice(item.price)}
+                    Preço: {formatPrice(Number(item.price))}
                   </p>
                   <div className="flex gap-2">
                     <Button

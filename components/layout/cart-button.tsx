@@ -27,11 +27,11 @@ const CartButton = () => {
   
 
   const totalPriceAll = useStore.cart.reduce((acc, item) => {
-    return acc + item.price! * item.quantity!;
+    return acc + Number(item.price!)  * item.quantity!;
   }, 0);
 
   return (
-    <Sheet  open={useStore.isOpen}  >
+    <Sheet open={useStore.isOpen}  >
       <SheetTrigger  className="flex items-center justify-center gap-2" onClick={()=>{
 useStore.toggleCart()
       }}>
