@@ -12,8 +12,7 @@ type CheckoutButtonProps = {
 };
 
 export default function CheckoutButton({ totalPrice }: CheckoutButtonProps) {
-  const router = useRouter();
-  const { user } = useUser();
+   const { user } = useUser();
   const cartStore = useCartStore();
    const { toast } = useToast();
 
@@ -21,7 +20,7 @@ export default function CheckoutButton({ totalPrice }: CheckoutButtonProps) {
 
 
     if(!user){  
-    toast({
+        toast({
               type: "background",
               title: "Checkout",
               description: "Você precisa estar logado para finalizar a compra.",
@@ -31,7 +30,7 @@ export default function CheckoutButton({ totalPrice }: CheckoutButtonProps) {
                 <ToastAction altText="Try again">
                   {" "}
                   <SignInButton mode="modal" forceRedirectUrl={"/"}>
-                    <Button className="w-full flex gap-2">Entrar</Button>
+                    <Button className="w-full flex gap-2"  onClick={()=>{cartStore.toggleCart()}}  >Entrar</Button>
                   </SignInButton>
                 </ToastAction>
               ),
@@ -42,16 +41,16 @@ export default function CheckoutButton({ totalPrice }: CheckoutButtonProps) {
   };
 
   return (
-    <div>
-      <p className='text-teal-600 font-bold'>
+    <div className = "flex flex-col items-center" >
+      <p className=' font-bold'>
         Total: {formatPrice(totalPrice)}
       </p>
-      <button
+      <Button
         onClick={handleCheckout}
-        className='w-full rounded-md bg-teal-600 text-white py-2 mt-2'
+        className='w-full rounded-md    '
       >
         Finalizar Compra
-      </button>
+      </Button>
     </div>
   );
 }

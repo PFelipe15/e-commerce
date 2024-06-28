@@ -15,13 +15,12 @@ interface ProductCardProps {
   id: string;
   name: string;
   sku?: string;
-  description: string;
-  price: string | number;
-  currency: string;
+  description: string ;
+  price: string | number | null;
+  currency?: string | undefined;
   image: string;
   images?: string[];
   isHighlight?: boolean;
-
 }
 
 const ProductCard = ({ ...product }: ProductCardProps) => {
@@ -41,20 +40,26 @@ const ProductCard = ({ ...product }: ProductCardProps) => {
 
     const useStore = useCartStore();
 
-  const addToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    addProduct(product)
-
-    toast({
-      title: ` ${product.name} Adicionado`,
-      description: "Quanto mais, melhor!",
-      action: (
-        <Button className=" font-bold flex gap-2 items-center" onClick={ () => {useStore.toggleCart()}}>
-          Abrir Carrinho <ShoppingCart size={25} />
-        </Button>
-      ),
-    });
-  };
+    const addToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      const productWithCorrectPriceType: Product = {
+        ...product,
+        price: Number(product.price),
+      };
+      addProduct(productWithCorrectPriceType);
+    
+      toast({
+        title: ` ${product.name} Adicionado`,
+        description: "Quanto mais, melhor!",
+        action: (
+          <Button className=" font-bold flex gap-2 items-center" onClick={() => {
+            useStore.toggleCart();
+          }}>
+            Abrir Carrinho <ShoppingCart size={25} />
+          </Button>
+        ),
+      });
+    };
 
   return (
     <Card className={product.isHighlight ? 'max-w-[300px]' : ''}>

@@ -268,9 +268,10 @@ import Checkout from './Checkout';
 import OrderCompleted from '././OrderCompleted';
 import { formatPrice } from './../../lib/formatPrice';
 import { useShoppingCart } from 'use-shopping-cart';
-import { CircleMinus, Link } from 'lucide-react';
+import { ArrowLeft, CircleMinus } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
+import Link from 'next/link';
 
 
 export default function CartDrawer() {
@@ -281,27 +282,27 @@ export default function CartDrawer() {
   }, 0);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={() => useStore.toggleCart()}
-      className='fixed w-full h-screen bg-black/25 left-0 top-0 z-50'
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className='absolute bg-slate-600 right-0 top-0 w-1/3 h-screen p-8 overflow-y-scroll'
-      >
-        <button
+    <section className="flex flex-col items-center justify-between gap-4 p-6 bg-gray-100 h-screen">
+
+<div className = "flex flex-col ">
+
+      <h1 className="text-2xl font-bold p-2 text-primary rounded-md">
+        Carrinho de Compras 🛒
+      </h1>
+        <Button
+        variant= 'link'
           onClick={() => useStore.toggleCart()}
-          className='font-bold text-sm text-teal-600'
+          className='font-bold text-sm  '
         >
           Voltar para loja
-        </button>
+        </Button>
+</div>
         <div className='border-t border-gray-400 my-4'></div>
 
         {useStore.onCheckout === 'cart' && (
           <>
+          <div className='w-full max-w-lg overflow-y-auto flex-grow' >
+
             {useStore.cart.map((item) => (
             <Card
               key={item.id}
@@ -336,15 +337,18 @@ export default function CartDrawer() {
                     </Button>
                     <Link
                       href={`/products/${item.id}`}
-                      className="text-white p-2 px-3 rounded-md bg-primary hover:text-black"
+                      className="text-white p-2 rounded-md bg-primary hover:text-black"
                     >
+ 
                       Detalhes
+                      
                     </Link>
                   </div>
                 </div>
               </CardContent>
             </Card>
           ))}
+          </div>
           </>
         )}
 
@@ -354,7 +358,7 @@ export default function CartDrawer() {
 
         {useStore.onCheckout === 'checkout' && <Checkout />}
         {useStore.onCheckout === 'success' && <OrderCompleted />}
-      </div>
-    </motion.div>
+      
+    </section>
   );
 }
