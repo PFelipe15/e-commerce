@@ -7,7 +7,7 @@ import db from '@/lib/db';
 
 const calculateOrderAmount = (items: Product[]) => {
   const totalPrice = items.reduce((acc, item) => {
-    return acc + item.price! * item.quantity!
+    return acc + Number(item.price!)  * item.quantity!
   }, 0)
   return totalPrice
 }
