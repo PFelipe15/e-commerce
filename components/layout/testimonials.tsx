@@ -1,23 +1,36 @@
-'use client'
-import React, { useEffect, useState } from 'react';
-import { fetchGooglePlaceDetails } from '../../app/api/reviews/fetchReviews';
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '../ui/carousel';
-import Image from 'next/image';
+"use client";
+import React, { useEffect, useState } from "react";
+import { fetchGooglePlaceDetails } from "../../app/api/reviews/fetchReviews";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "../ui/carousel";
+import Image from "next/image";
 
+interface Comment {
+  author_name: string;
+  relative_time_description: string;
+  text: string;
+  rating: number;
+  profile_photo_url: string;
+}
 export default function CommentCarrousel() {
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState<Comment[]>([]);
 
   useEffect(() => {
     async function getComments() {
       const result = await fetchGooglePlaceDetails();
-       setComments(result.reviews);
+      setComments(result.reviews);
     }
 
     getComments();
   }, []);
 
   return (
-    <Carousel className='w-[80vw] md:w-[30vw]' >
+    <Carousel className="w-[80vw] md:w-[30vw]">
       <CarouselContent className="flex items-center justify-center">
         {comments.map((comment, index) => (
           <CarouselItem key={index} className="p-4 ">
@@ -31,12 +44,16 @@ export default function CommentCarrousel() {
                   height={70}
                 />
                 <div>
-                  <h3 className="font-bold text-primary">{comment.author_name}</h3>
-                  <p className="text-sm text-gray-500">{comment.relative_time_description}</p>
+                  <h3 className="font-bold text-primary">
+                    {comment.author_name}
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    {comment.relative_time_description}
+                  </p>
                 </div>
               </div>
               <blockquote className="text-base md:text-lg text-gray-800">
-                {comment.text? comment.text: "Sem comentario"}
+                {comment.text ? comment.text : "Sem comentario"}
               </blockquote>
               <div className="flex items-center mt-2">
                 {[...Array(comment.rating)].map((_, i) => (
@@ -55,8 +72,8 @@ export default function CommentCarrousel() {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious  className='text-primary' />
-      <CarouselNext  className='text-primary'  />
+      <CarouselPrevious className="text-primary" />
+      <CarouselNext className="text-primary" />
     </Carousel>
   );
 }
