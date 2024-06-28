@@ -1,17 +1,50 @@
 'use client'
 import { ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useShoppingCart } from 'use-shopping-cart';
-
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import CartDisplay from './cartDisplay';
+import { useCartStore } from '@/store';
+import { formatPrice } from '@/lib/formatPrice';
 const CartButton = () => {
-  const { cartCount, formattedTotalPrice} = useShoppingCart();
+  const [isClient, setIsClient] = useState(false)
+  const { cartCount, formattedTotalPrice, shouldDisplayCart, handleCartClick  } = useShoppingCart();
+ 
+  const useStore = useCartStore()
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+  
+
+  const totalPriceAll = useStore.cart.reduce((acc, item) => {
+    return acc + item.price! * item.quantity!;
+  }, 0);
+
   return (
-    <Link href={"/cart"} className="flex items-center justify-center gap-2  ">
-      <ShoppingCart className="w-6 h-6 font-extrabold" />({formattedTotalPrice})
-      ({cartCount})
-    </Link>
+    <Sheet  open={useStore.isOpen}  >
+      <SheetTrigger  className="flex items-center justify-center gap-2" onClick={()=>{
+useStore.toggleCart()
+      }}>
+        <ShoppingCart className=" md:w-6 md:h-6 md:font-extrabold " />(
+        {isClient ?  formatPrice(totalPriceAll) : "..."})
+        <div className="bg-primary rounded-full text-white p-1 text-sm font-normal">
+          ({isClient ? useStore.cart?.length : "..."})
+        </div>
+      </SheetTrigger>
+      <SheetContent    >
+        <CartDisplay />
+      </SheetContent>
+    </Sheet>
   );
 };
 

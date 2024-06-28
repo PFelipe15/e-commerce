@@ -14,6 +14,7 @@ export default function AppCartProvider({children}:appCartProviderProps){
       cartMode="checkout-session"
       stripe={stripeKey}
       currency="BRL"
+      
     >
       {children}
     </CartProvider>

@@ -9,7 +9,7 @@ const Logo = () => {
   return (
     <Link
       href="/"
-      className="flex items-center justify-center gap-2 text-xl font-extrabold  "
+      className=" items-center justify-center gap-2 text-xl font-extrabold   sm:flex  "
     >
 
       <Image
@@ -19,7 +19,7 @@ const Logo = () => {
       alt='Logo'
       className='rounded-md'
       />
-       <span className="hidden sm:inline-block">Stilo20</span>
+       <span className="">Stilo20</span>
     </Link>
   );
 }

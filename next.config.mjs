@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  
   images: {
     remotePatterns: [
       {
@@ -8,6 +9,9 @@ const nextConfig = {
 
       {
         hostname:"files.stripe.com"
+      },
+      {
+        hostname:"lh3.googleusercontent.com"
       }
     ],
   },

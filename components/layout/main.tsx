@@ -33,8 +33,8 @@ export default function Main() {
   return (
     <div>
       <section
-        className={`   ${bgStyle} 
-        flex flex-col items-center justify-center  h-full md:h-[70vh] text-white`}
+        className={` ${bgStyle} 
+        flex h-[80vh]  flex-col items-center justify-center   md:h-[70vh] text-white`}
       >
         <div className="flex flex-col gap-4 text-black font-extrabold md:mr-[350px] md:mb-32 rounded-lg">
           <h1
@@ -45,13 +45,13 @@ export default function Main() {
           >
             STILO20
           </h1>
-          <p className="text-base md:text-lg font-sans md:mb-4 font-normal bg-white text-primary rounded-xl p-2">
+          <p className={cn(" md:text-xl font-sans md:mb-4 font-semibold bg-white text-primary rounded-xl p-1")}>
             Descubra as últimas tendências da moda e encontre seus looks
             favoritos!
           </p>
           <Link href="/products/all">
-            <Button className="bg-primary text-normal text-white hover:text-primary p-4 rounded transition duration-300 ease-in-out transform hover:scale-110">
-              Explore as Coleções
+            <Button className="bg-primary   text-white ">
+              Todas as Coleções
             </Button>
           </Link>
         </div>

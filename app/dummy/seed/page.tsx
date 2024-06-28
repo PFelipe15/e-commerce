@@ -3,7 +3,7 @@ import stripe from '@/lib/stripe';
 import { DummyProduct } from '@/types';
 
 async function getDummyProducts(){
-  const response = await fetch("https://dummyjson.com/products?limit=9");
+  const response = await fetch("https://dummyjson.com/products?limit=15");
   const dummyData = await response.json();
 
   const products = dummyData.products.map((p:DummyProduct)=>{
@@ -27,7 +27,7 @@ async function seedDummyData(){
   await products.map(async (product: any) => {
     try {
       const productCreated = await stripe.products.create(product);
-      console.log(productCreated.name)
+ 
     } catch (e: any) {
       console.log("STRIEP CREATED ERROR: ", e.message);
     }
