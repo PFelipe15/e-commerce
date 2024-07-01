@@ -73,9 +73,14 @@ const eventType:EventType = evt.type
 let customer
 
   if(hasCustomer && hasCustomer.stripeCustomerId){
+
+
+    
     customer = await stripe.customers.update(hasCustomer.stripeCustomerId,{
       name: `${first_name} ${last_name}`,
       email: email_addresses? email_addresses[0].email_address : "",
+
+
       })} else{
     customer= await stripe.customers.create({
       name: `${first_name} ${last_name}`,

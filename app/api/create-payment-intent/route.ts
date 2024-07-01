@@ -30,7 +30,7 @@ if(!currentUser){
 }
 
   const orderData = {
-    user: { connect: { id: 1} },
+    user: { connect: currentUser.id },
     amount: total,
     currency: 'brl',
     status: 'pending',
