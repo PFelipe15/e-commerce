@@ -30,7 +30,7 @@ if(!currentUser){
 }
 
   const orderData = {
-    user: { connect: currentUser.id },
+    user: { connect:{id: currentUser.id} },
     amount: total,
     currency: 'brl',
     status: 'pending',
@@ -94,6 +94,7 @@ if(!currentUser){
     orderData.paymentIntentID = paymentIntent.id;
 
     const newOrder = await db.order.create({
+    
       data: orderData
     })
     
