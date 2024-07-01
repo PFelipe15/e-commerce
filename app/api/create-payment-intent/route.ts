@@ -20,9 +20,18 @@ export async function POST(req: Request) {
   }
 
    const total = calculateOrderAmount(items);
+const currentUser = await db.user.findUnique({
+  where:{
+    externalId:userId
+  }
+})
+
+if(!currentUser){
+  return new Response("User not found", { status: 404 });
+}
 
   const orderData = {
-    user: { connect: { id: 1 } },
+    user: { connect: { id: currentUser.id } },
     amount: total,
     currency: 'brl',
     status: 'pending',
