@@ -7,9 +7,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { cn } from "@/lib/utils"
 import AppCartProvider from "@/components/shop/app-cart-privider";
 import { Toaster } from "@/components/ui/toaster"
-import Footer from "@/components/layout/footer";
-import { SessionProvider } from "next-auth/react";
-import { ptBR } from "@clerk/localizations";
+ import { ptBR } from "@clerk/localizations";
 
    
 export const metadata: Metadata = {
@@ -31,16 +29,14 @@ export default function RootLayout({
       <body className={cn(cormot.className, "min-h-screen   bg-pink-100 flex flex-col")}>
         <AppCartProvider >
           <ClerkProvider localization={ptBR}>
-            <SessionProvider>
-              <Toaster />
+               <Toaster />
               <main
                 className={"flex-grow transition duration-3000 ease-in-out"}
               >
                 {children}
               </main>
           
-            </SessionProvider>
-          </ClerkProvider>
+           </ClerkProvider>
           :
         </AppCartProvider>
       </body>
