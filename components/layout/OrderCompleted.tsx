@@ -14,7 +14,7 @@ function OrderCompleted() {
   return (
     <div>
       <h1>Pedido concluído com sucesso</h1>
-      <button className="bg-teal-600 text-white py-2 px-4 rounded-md" onClick={() => {
+      <button className=" text-white py-2 px-4 rounded-md" onClick={() => {
         setTimeout(() => {
           cartStore.setCheckout("cart");          
         }, 1000);

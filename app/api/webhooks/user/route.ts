@@ -63,15 +63,30 @@ const eventType:EventType = evt.type
       } = evt.data
 
 
- const customer = await stripe.customers.create({
-  name: `${first_name} ${last_name}`,
-  email: email_addresses? email_addresses[0].email_address : "",
-  
-})
+
+  const hasCustomer = await db?.user.findUnique({
+    where:{
+      externalId: id as string,
+    }
+  })
+      
+let customer
+
+  if(hasCustomer && hasCustomer.stripeCustomerId){
+    customer = await stripe.customers.update(hasCustomer.stripeCustomerId,{
+      name: `${first_name} ${last_name}`,
+      email: email_addresses? email_addresses[0].email_address : "",
+      })} else{
+    customer= await stripe.customers.create({
+      name: `${first_name} ${last_name}`,
+      email: email_addresses? email_addresses[0].email_address : "",
+  })
+} 
+
       await db?.user.upsert({
         where: { externalId: id as string },
         create: {
-          externalId: id as string,
+          externalId:id as string,
           stripeCustomerId: customer.id,
           attributes,
         },

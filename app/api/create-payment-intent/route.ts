@@ -2,8 +2,7 @@
 import stripe from './../../../lib/stripe';
 import { Product } from '@/types';
 import { auth } from '@clerk/nextjs/server';
-import { Prisma } from '@prisma/client';
-import db from '@/lib/db';
+ import db from '@/lib/db';
 
 const calculateOrderAmount = (items: Product[]) => {
   const totalPrice = items.reduce((acc, item) => {
@@ -27,11 +26,11 @@ const currentUser = await db.user.findUnique({
 })
 
 if(!currentUser){
-  return new Response("User not found", { status: 404 });
+   return new Response("User not found", { status: 404 });
 }
 
   const orderData = {
-    user: { connect: { id: currentUser.id } },
+    user: { connect: { id: 1} },
     amount: total,
     currency: 'brl',
     status: 'pending',

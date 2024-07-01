@@ -33,7 +33,8 @@ export default function Checkout() {
     appearance: {
       theme: 'stripe',
       labels: 'floating',
-    }
+    },
+    locale:"pt"
   }  
 
   return (
