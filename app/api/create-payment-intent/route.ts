@@ -7,11 +7,10 @@ import db from '@/lib/db';
 
 const calculateOrderAmount = (items: Product[]) => {
   const totalPrice = items.reduce((acc, item) => {
-    return acc + Number(item.price!)  * item.quantity!
-  }, 0)
-  return totalPrice
-}
-
+    return acc + Number(item.price) * (item.quantity ?? 0);
+  }, 0);
+  return Math.round(totalPrice * 100);  
+};
 export async function POST(req: Request) {
   const { userId } = auth();
   const { items, payment_intent_id } = await req.json();
@@ -20,8 +19,7 @@ export async function POST(req: Request) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const customerIdTemp = 'cus_OvJFglQZ0DNK3i';
-  const total = calculateOrderAmount(items);
+   const total = calculateOrderAmount(items);
 
   const orderData = {
     user: { connect: { id: 1 } },
