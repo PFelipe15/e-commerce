@@ -42,9 +42,7 @@ export default function CheckoutButton({ totalPrice }: CheckoutButtonProps) {
 
   return (
     <div className = "flex flex-col items-center" >
-      <p className=' font-bold'>
-        Total: {formatPrice(totalPrice)}
-      </p>
+      
       <Button
         onClick={handleCheckout}
         className='w-full rounded-md    '

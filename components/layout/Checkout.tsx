@@ -38,14 +38,14 @@ export default function Checkout() {
   }  
 
   return (
-    <div>
+    <div className="flex items-center justify-center  ">
       {
         clientSecret ? (
           <Elements options={options} stripe={stripePromise}>
             <CheckoutForm clientSecret={clientSecret} />
           </Elements>
         ) : (
-          <div>
+          <div >
             <h1>Carregando...</h1>
           </div>
         )

@@ -25,12 +25,12 @@ const currentUser = await db.user.findUnique({
   }
 })
 
-if(!currentUser){
-   return new Response("User not found", { status: 404 });
-}
+// if(!currentUser){
+//    return new Response("User not found", { status: 404 });
+// }
 
   const orderData = {
-    user: { connect:{id: currentUser.id} },
+    user: { connect:{id: 8} },
     amount: total,
     currency: 'brl',
     status: 'pending',
