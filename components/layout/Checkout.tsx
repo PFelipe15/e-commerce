@@ -22,7 +22,7 @@ export default function Checkout() {
         payment_intent_id: cartStore.paymentIntent,
       }),
     }).then((res) => { return res.json() }).then((data) => {
-      cartStore.setPaymentIntent(data.paymentIntent.id);      
+        cartStore.setPaymentIntent(data.paymentIntent.id);      
       setClientSecret(data.paymentIntent?.client_secret);
     });
 

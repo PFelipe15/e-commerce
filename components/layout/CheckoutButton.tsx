@@ -49,7 +49,7 @@ export default function CheckoutButton({ totalPrice }: CheckoutButtonProps) {
         onClick={handleCheckout}
         className='w-full rounded-md    '
       >
-        Finalizar Compra
+       Fazer checkout
       </Button>
     </div>
   );

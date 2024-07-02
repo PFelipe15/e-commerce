@@ -8,6 +8,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
 
 function CheckoutForm({ clientSecret }: { clientSecret: string }) {
   const stripe = useStripe();
@@ -47,13 +48,13 @@ function CheckoutForm({ clientSecret }: { clientSecret: string }) {
     <form onSubmit={handleSubmit} id="payment-form">
       <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
       <h1 className="py-4 font-bold">Total: {formattedPrice}</h1>
-      <button
+      <Button
         type="submit"
         disabled={!stripe || isLoading}
-        className="bg-teal-600 text-white py-2 px-4 rounded-md"
+        className="  text-white py-2 px-4 rounded-md"
       >
         {isLoading ? "Carregando..." : "Finalizar compra"}
-      </button>
+      </Button>
     </form>
   );
 }
