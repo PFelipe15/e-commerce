@@ -84,7 +84,7 @@ export default function CartDrawer() {
   }) => (
     <div className="flex justify-between  mb-4">
       <div className = "flex flex-col  gap-2">
-        <h3 className="text-2xl font-bold text-primary">{title}</h3>
+        <h3 className=" text-xl md:text-2xl font-bold text-primary">{title}</h3>
         <p className="text-sm text-gray-600 font-semibold">{description}</p>
       </div>
       {onBack && (
@@ -110,9 +110,9 @@ export default function CartDrawer() {
 
   return (
     
-    <section className="flex flex-col  min-w-[450px] items-center gap-2 p-6 bg-gray-100 h-screen">
-      <div className="flex  justify-between justify-center  items-center w-full mb-4">
-        <h1 className="text-3xl font-bold p-2 text-primary  ">
+    <section className="flex flex-col md:min-w-[450px]   items-center gap-2 p-2 bg-gray-100 h-screen">
+      <div className="flex  justify-between  items-center w-full mb-4">
+        <h1 className=" text-2xl md:text-3xl font-bold p-2 text-primary  ">
           Carrinho de Compras 🛒
         </h1>
         <Button className="p-1 px-2" onClick={()=>{
@@ -135,7 +135,7 @@ export default function CartDrawer() {
               >
                 <CardHeader className="bg-primary p-4 flex justify-between  items-center">
                   <CardTitle className="text-base font-bold text-white">
-                    {item.name} ({item.quantity})
+                    {item.name} 
                   </CardTitle>
                  
                 </CardHeader>
@@ -158,7 +158,26 @@ export default function CartDrawer() {
                       Detalhes
                     </Link>
 
-                    <Button
+                   
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-between items-center  p-4 border-t border-gray-200">
+                  <div className="flex items-center">
+                    <span className="text-gray-700 font-medium text-lg">Total:</span>
+                    <span className="ml-2 text-lg font-bold">
+                     
+ {formatPrice(Number(item.price) * item.quantity!)}
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-gray-700 font-medium text-lg">Quantidade:</span>
+                    <span className="ml-2 text-lg font-bold">
+                     
+ {item.quantity}
+                    </span>
+                  </div>
+
+                  <Button
                     variant="ghost"
                     className="text-red-500 hover:text-red-700"
                     onClick={() => {
@@ -167,16 +186,6 @@ export default function CartDrawer() {
                   >
                     <CircleMinus size={20} />
                   </Button>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-between items-center p-4 border-t border-gray-200">
-                  <div className="flex items-center">
-                    <span className="text-gray-700 font-medium">Total:</span>
-                    <span className="ml-2 text-lg font-bold">
-                     
- {formatPrice(Number(item.price) * item.quantity!)}
-                    </span>
-                  </div>
                 </CardFooter>
               </Card>
             ))}
@@ -195,7 +204,7 @@ export default function CartDrawer() {
 
 {useStore.onCheckout === "checkout" && (
   <>
-    <div className="min-w-[380px]">
+    <div >
       {useStore.stepCart === 1 && (
         <>
           <StepHeader
