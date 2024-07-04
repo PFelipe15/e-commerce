@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
- import { Product as ProductType } from './types/index';
+import { Product as ProductType } from './types/index';
 
 type CartState = {
   cart: ProductType[];
@@ -13,6 +13,8 @@ type CartState = {
   setCheckout: (checkout: string) => void;
   paymentIntent: string;
   setPaymentIntent: (paymentIntent: string) => void;
+  stepCart: number;
+  setStepCart: (step: number) => void;  // Adicionando a definição de setStepCart
 };
 
 export const useCartStore = create<CartState>()(
@@ -48,17 +50,21 @@ export const useCartStore = create<CartState>()(
             });
             return { cart: updatedCart };
           } else {
-            const filterdCart = state.cart.filter((p) => p.id !== item.id);
-            return { cart: filterdCart };
+            const filteredCart = state.cart.filter((p) => p.id !== item.id);
+            return { cart: filteredCart };
           }
         }),
       isOpen: false,
       toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
       onCheckout: 'cart',
+      stepCart: 1,
+
       setCheckout: (checkout) => set(() => ({ onCheckout: checkout })),
       paymentIntent: '',
       setPaymentIntent: (paymentIntent) => set(() => ({ paymentIntent })),
       clearCart: () => set(() => ({ cart: [] })),
+      
+      setStepCart: (step) => set(() => ({ stepCart: step })),  // Implementando a função setStepCart
     }),
     { name: 'cart-storage' }
   )

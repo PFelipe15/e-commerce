@@ -5,15 +5,15 @@ import CheckoutButton from "./CheckoutButton";
 import Checkout from "./Checkout";
 import OrderCompleted from "./OrderCompleted";
 import { formatPrice } from "./../../lib/formatPrice";
-import { CircleMinus, MoveLeft } from "lucide-react";
+import { CircleMinus, MoveLeft, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../ui/card";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
-import { FaMapMarker, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaMapMarker, FaChevronDown, FaChevronUp, FaEdit, FaTrash, FaCheckCircle, FaRegWindowClose  } from "react-icons/fa";
 import AddressForm from "./addressForm";
 import Modal from "./Modal"; // Novo import para o modal
-
+  
 interface Address {
   street?: string;
   number?: string;
@@ -21,9 +21,12 @@ interface Address {
   city?: string;
   zip?: string;
   placeName?: string;
+  neighborhood?: string;
+
 }
 
 export default function CartDrawer() {
+  
   const useStore = useCartStore();
   const { user } = useUser();
   const [address, setAddress] = useState<Address | null>(null);
@@ -37,14 +40,16 @@ export default function CartDrawer() {
   const [showAddressInfo, setShowAddressInfo] = useState(false); // Estado para controlar visibilidade das informações de endereço
   const [showProducts, setShowProducts] = useState(false); // Estado para controlar visibilidade dos produtos
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const savedAddr = localStorage.getItem("userAddress");
 
     if (savedAddr) {
       setHasAddress(true);
       setSavedAddress(JSON.parse(savedAddr));
+      setAddress(JSON.parse(savedAddr));
     }
-  }, [useStore.isOpen]);
+  }, [useStore.isOpen,useStore.stepCart ]);
 
   useEffect(() => {
     if (address) {
@@ -56,6 +61,11 @@ export default function CartDrawer() {
     setEditHasAddress(true);
   };
 
+  const handleNewAddress = (address) => {
+    localStorage.setItem("userAddress", JSON.stringify(address));
+
+  }
+
   const handleCancelEdit = () => {
     setEditHasAddress(false);
   };
@@ -66,41 +76,68 @@ export default function CartDrawer() {
     setHasAddress(false);
   };
 
+  const StepHeader = ({ step, title, description, onBack }: {
+    step: number;
+    title: string;
+    description: string;
+    onBack?: () => void;   
+  }) => (
+    <div className="flex justify-between  mb-4">
+      <div className = "flex flex-col  gap-2">
+        <h3 className="text-2xl font-bold text-primary">{title}</h3>
+        <p className="text-sm text-gray-600 font-semibold">{description}</p>
+      </div>
+      {onBack && (
+        <Button  variant={'outline'}  onClick={onBack} className="p-2">
+          <MoveLeft size={25} className="text-primary" />
+        </Button>
+      )}
+    </div>
+  );
+
   const totalPriceAll = useStore.cart.reduce((acc, item) => {
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
     return acc + Number(item.price!) * item.quantity!;
   }, 0);
 
+ 
+
+  const handleStepChange = (step:number, description:string) => {
+    useStore.setStepCart(step);
+    
+  };
+
+
   return (
-    <section className="flex flex-col min-w-sm items-center gap-2 p-6 bg-gray-100 h-screen">
-      <div className="flex flex-col items-center w-full mb-4">
-        <h1 className="text-2xl font-bold p-2 text-primary rounded-md">
+    
+    <section className="flex flex-col  min-w-[450px] items-center gap-2 p-6 bg-gray-100 h-screen">
+      <div className="flex  justify-between justify-center  items-center w-full mb-4">
+        <h1 className="text-3xl font-bold p-2 text-primary  ">
           Carrinho de Compras 🛒
         </h1>
+        <Button className="p-1 px-2" onClick={()=>{
+          useStore.toggleCart();
+        }}>
+        <X size={20}/>
+          
+           </Button>
       </div>
 
-      <div className="border-t border-gray-400 my-4 w-full"></div>
+      <div className="border-t border-gray-400 my-4 w-full" />
 
       {useStore.onCheckout === "cart" && (
         <>
-          <div className="w-full min-w-[380px] overflow-y-auto flex-grow">
+          <div className="w-full  overflow-y-auto flex-grow">
             {useStore.cart.map((item) => (
               <Card
                 key={item.id}
                 className="w-full bg-white rounded-lg shadow-md overflow-hidden mb-4"
               >
-                <CardHeader className="bg-primary p-4 flex justify-between items-center">
+                <CardHeader className="bg-primary p-4 flex justify-between  items-center">
                   <CardTitle className="text-base font-bold text-white">
                     {item.name} ({item.quantity})
                   </CardTitle>
-                  <Button
-                    variant="ghost"
-                    className="text-red-500 hover:text-red-700"
-                    onClick={() => {
-                      useStore.removeProduct(item);
-                    }}
-                  >
-                    <CircleMinus size={20} />
-                  </Button>
+                 
                 </CardHeader>
                 <CardContent className="p-4 flex items-center">
                   <Image
@@ -120,13 +157,24 @@ export default function CartDrawer() {
                     >
                       Detalhes
                     </Link>
+
+                    <Button
+                    variant="ghost"
+                    className="text-red-500 hover:text-red-700"
+                    onClick={() => {
+                      useStore.removeProduct(item);
+                    }}
+                  >
+                    <CircleMinus size={20} />
+                  </Button>
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between items-center p-4 border-t border-gray-200">
                   <div className="flex items-center">
                     <span className="text-gray-700 font-medium">Total:</span>
                     <span className="ml-2 text-lg font-bold">
-                      {formatPrice(Number(item.price) * item.quantity!)}
+                     
+ {formatPrice(Number(item.price) * item.quantity!)}
                     </span>
                   </div>
                 </CardFooter>
@@ -145,226 +193,180 @@ export default function CartDrawer() {
         </>
       )}
 
-      {useStore.onCheckout === "checkout" && (
+{useStore.onCheckout === "checkout" && (
+  <>
+    <div className="min-w-[380px]">
+      {useStore.stepCart === 1 && (
         <>
-          <div className="min-w-[380px] ">
-            {step === 1 && (
-              <>
-              <div className ='flex justify-between items-center mb-4' > 
-
-                <p className="text-lg font-semibold  ">
-                  Passo 1: Endereço de Entrega
-                </p>
-
-                <Button className="p-1 bg-transparent" onClick={() => useStore.setCheckout("cart")} >
-                  <MoveLeft size={20} className="text-primary" />
-                </Button>
-              </div>
-                {!savedAddress || editHasAddress || newAddress ? (
-                  <AddressForm
-                    onSubmit={(addr) => {
-                      setAddress(addr);
-                      setStep(2);
-                    }}
-                    onCancel={handleCancelEdit}
-                     savedAddress={editHasAddress ? savedAddress : null}
-                  />
-                ) : (
-                  <div className="flex flex-col gap-4 ">
-                   
-                    <p className="text-sm font-medium mb-2">
-                      Selecione um endereço salvo:
-                    </p>
-
-                    {savedAddress && (
-                      <>
-                        <Card className=" flex flex-col items-center p-4 bg-gray-50 rounded-md shadow-md">
-                          <div className="flex flex-col">
-                            <h3 className="text-lg font-semibold mb-2">
-                              Endereço Salvo:
-                            </h3>
-                            <p>
-                              <strong>Nome do Lugar:</strong>{" "}
-                              {savedAddress.placeName}
-                            </p>
-                            <p>
-                              <strong>Endereço:</strong> {savedAddress.street},{" "}
-                              {savedAddress.number}
-                            </p>
-                            <p>
-                              <strong>Cidade:</strong> {savedAddress.city}
-                            </p>
-                            <p>
-                              <strong>Estado:</strong> {savedAddress.state}
-                            </p>
-                            <p>
-                              <strong>CEP:</strong> {savedAddress.zip}
-                            </p>
-                          </div>
-                          <div className="flex gap-2 items-center">
-                            <Button onClick={handleEditAddress}>Editar</Button>
-                            <Button onClick={handleDeleteAddress}>
-                              Excluir
-                            </Button>
-                            <Button
-                              className="bg-green-700"
-                              onClick={
-                                () => {
-                                  setAddress(savedAddress);
-                                  setStep(2);
-                                }
-                              }
-                            >
-                              Selecionar
-                            </Button>
-                          </div>
-                        </Card>
-                        <Button onClick={() => setNewAddress(true)}>
-                          Novo Endereço <FaMapMarker size={20} />
-                        </Button>
-                      </>
-                    )}
-                  </div>
-                )}
-
-             
-              </>
-            )}
-
-            {step === 2 && address && (
-              <div className="flex flex-col gap-2 h-full">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-bold text-primary">Passo 2: Resumo do Pedido</h3>
-                  <Button className="p-2 bg-transparent" onClick={() => setStep(1)}>
-                    <MoveLeft size={24} className="text-primary" />
-                  </Button>
-                </div>
-                
-                <div className="bg-white p-4 rounded-lg shadow-md mb-2">
-                  <div className="flex justify-between items-center">
-                    <h4 className="text-xl font-semibold text-gray-700">Informações do Cliente</h4>
-                    <Button className="p-1  " onClick={() => setShowClientInfo(!showClientInfo)}>
-                      {showClientInfo ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
-                    </Button>
-                  </div>
-                  {showClientInfo && (
-                    <div className="mt-2 space-y-2">
-                      <p className="text-gray-600">
-                        <strong>Nome:</strong> {user?.fullName}
-                      </p>
-                      <p className="text-gray-600">
-                        <strong>Email:</strong> {user?.emailAddresses[0].emailAddress}
-                      </p>
+          <StepHeader
+            step={1}
+            title="Passo 1: Endereço de Entrega"
+            description="Selecione ou adicione um novo endereço de entrega."
+            onBack={() => useStore.setCheckout("cart")}
+          />
+          {!savedAddress || editHasAddress || newAddress ? (
+            <AddressForm
+              onSubmit={(addr) => {
+                handleNewAddress(addr);
+                handleStepChange(2, "Resumo do Pedido");
+              }}
+              onCancel={handleCancelEdit}
+              savedAddress={editHasAddress ? savedAddress : null}
+            />
+          ) : (
+            <div className="flex flex-col gap-4">
+              {savedAddress && (
+                <>
+                  <Card className="flex flex-col items-start p-4 bg-gray-50 rounded-md shadow-md">
+                    <h3 className="text-lg font-semibold mb-2">Endereço Salvo:</h3>
+                    <p><strong>Nome do Lugar:</strong> {savedAddress.placeName}</p>
+                    <p><strong>Endereço:</strong> {savedAddress.street}, {savedAddress.number}</p>
+                    <p><strong>Bairro:</strong> {savedAddress.neighborhood || 'Bairro não informado'}</p>
+                    <p><strong>Cidade:</strong> {savedAddress.city}</p>
+                    <p><strong>Estado:</strong> {savedAddress.state}</p>
+                    <p><strong>CEP:</strong> {savedAddress.zip}</p>
+                    <div className="flex gap-2 mt-4">
+                      <Button className="flex items-center gap-1" onClick={handleEditAddress}>
+                        <FaEdit /> Editar
+                      </Button>
+                      <Button className="flex items-center gap-1" onClick={handleDeleteAddress}>
+                        <FaTrash /> Excluir
+                      </Button>
+                      <Button className="bg-green-600 text-white flex items-center gap-1" onClick={() => {
+                        setAddress(savedAddress);
+                        handleStepChange(2, "Resumo do Pedido");
+                      }}>
+                        <FaCheckCircle /> Selecionar
+                      </Button>
                     </div>
-                  )}
-                </div>
-
-                <div className="bg-white p-4 rounded-lg shadow-md mb-2">
-                  <div className="flex justify-between items-center">
-                    <h4 className="text-xl font-semibold text-gray-700">Endereço de Entrega</h4>
-                    <Button className="p-1 " onClick={() => setShowAddressInfo(!showAddressInfo)}>
-                      {showAddressInfo ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
-                    </Button>
-                  </div>
-                  {showAddressInfo && (
-                    <div className="mt-2 space-y-2">
-                      <p className="text-gray-600">
-                        <strong>Nome do lugar:</strong> {address.placeName}
-                      </p>
-                      <p className="text-gray-600">
-                        <strong>Endereço:</strong> {address.street}, {address.number}
-                      </p>
-                      <p className="text-gray-600">
-                        <strong>Cidade:</strong> {address.city}
-                      </p>
-                      <p className="text-gray-600">
-                        <strong>Estado:</strong> {address.state}
-                      </p>
-                      <p className="text-gray-600">
-                        <strong>CEP:</strong> {address.zip}
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="bg-white max-w-sm p-4 rounded-lg shadow-md mb-2">
-                  <div className="flex justify-between items-center">
-                    <h4 className="text-xl font-semibold text-gray-700">Produtos</h4>
-                    <Button className="p-1  " onClick={() => setShowProducts(!showProducts)}>
-                      {showProducts ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
-                    </Button>
-                  </div>
-                  {showProducts && (
-                    <>
-                      {useStore.cart.map((item) => (
-                        <div key={item.id} className="flex justify-between border-b border-gray-200 py-2">
-                          <div>
-                            <p className="text-gray-600">
-                              <strong>Produto:</strong> {item.name} ({item.quantity})
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-gray-600">
-                              <strong>Preço:</strong> {formatPrice(Number(item.price) * Number(item.quantity))}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                      <p className="text-lg font-semibold text-gray-800 mt-2">
-                        Total: {formatPrice(totalPriceAll)}
-                      </p>
-                    </>
-                  )}
-                </div>
-
-                <div className="flex flex-col items-center mt-4 space-y-2">
-                  <Button onClick={() => setStep(1)} className="px-6 py-2 w-full text-lg bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-md">
-                    Voltar ao Endereço
+                  </Card>
+                  <Button className="px-6 py-2 w-full text-lg bg-primary hover:bg-primary-dark text-white font-semibold rounded-md" onClick={() => setNewAddress(true)}>
+                    Novo Endereço <FaMapMarker size={20} />
                   </Button>
-                  <Button onClick={() => setShowModal(true)} className="px-6 py-2 w-full text-lg bg-primary hover:bg-primary-dark text-white font-semibold rounded-md">
-                    Confirmar Resumo da Compra
-                  </Button>
-                </div>
-              </div>
-            )}
+                  <Button onClick={()=>{return useStore.setCheckout("cart");}} className="px-6 py-2 w-full text-lg bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-md">
+              Voltar ao Carrinho
+            </Button>
+          
 
-            {step === 3 && address && (
-              <div className="flex flex-col gap-4">
-                <p className="text-lg font-semibold mb-4">
-                  Passo 3: Aguardando Pagamento
-                </p>
-                <Checkout />
-                
-              </div>
-            )}
-          </div>
+                </>
+              )}
+            </div>
+          )}
         </>
       )}
 
-      {useStore.onCheckout === "success" && <OrderCompleted />}
+      {useStore.stepCart === 2 && address && (
+        <div className="flex flex-col gap-2 h-full">
+          <StepHeader
+            step={2}
+            title="Passo 2: Resumo do Pedido"
+            description="Confira as informações do pedido antes de continuar."
+            onBack={() => handleStepChange(1, "Endereço de Entrega")}
+          />
+          
+          <div className="bg-white p-4 rounded-lg shadow-md mb-2">
+            <div className="flex justify-between items-center">
+              <h4 className="text-xl font-semibold text-gray-700">Informações do Cliente</h4>
+              <Button className="p-1" onClick={() => setShowClientInfo(!showClientInfo)}>
+                {showClientInfo ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
+              </Button>
+            </div>
+            {showClientInfo && (
+              <div className="mt-2 space-y-2">
+                <p className="text-gray-600"><strong>Nome:</strong> {user?.fullName}</p>
+                <p className="text-gray-600"><strong>Email:</strong> {user?.emailAddresses[0].emailAddress}</p>
+              </div>
+            )}
+          </div>
 
-      <Button
-        variant="link"
-        onClick={() => useStore.toggleCart()}
-        className="font-bold text-sm"
-      >
-        Voltar para loja
-      </Button>
+          <div className="bg-white p-4 rounded-lg shadow-md mb-2">
+            <div className="flex justify-between items-center">
+              <h4 className="text-xl font-semibold text-gray-700">Endereço de Entrega</h4>
+              <Button className="p-1" onClick={() => setShowAddressInfo(!showAddressInfo)}>
+                {showAddressInfo ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
+              </Button>
+            </div>
+            {showAddressInfo && (
+              <div className="mt-2 space-y-2">
+                <p className="text-gray-600"><strong>Nome do lugar:</strong> {address.placeName}</p>
+                <p className="text-gray-600"><strong>Endereço:</strong> {address.street}, {address.number}</p>
+                <p className="text-gray-600"><strong>Cidade:</strong> {address.city}</p>
+                <p className="text-gray-600"><strong>Estado:</strong> {address.state}</p>
+                <p className="text-gray-600"><strong>CEP:</strong> {address.zip}</p>
+              </div>
+            )}
+          </div>
 
-      {showModal && (
-        <Modal onClose={() => setShowModal(false)}>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-2xl font-bold mb-4">Confirmar Resumo da Compra</h3>
-            <p className="mb-4">Deseja confirmar o resumo da compra?</p>
-            <Button onClick={() => { setStep(3); setShowModal(false); }} className="bg-primary text-white px-4 py-2 rounded-md">
-              Confirmar
+          <div className="bg-white max-w-sm p-4 rounded-lg shadow-md mb-2">
+            <div className="flex justify-between items-center">
+              <h4 className="text-xl font-semibold text-gray-700">Produtos</h4>
+              <Button className="p-1" onClick={() => setShowProducts(!showProducts)}>
+                {showProducts ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
+              </Button>
+            </div>
+            {showProducts && (
+              <>
+                {useStore.cart.map((item) => (
+                  <div key={item.id} className="flex justify-between border-b border-gray-200 py-2">
+                    <div>
+                      <p className="text-gray-600"><strong>Produto:</strong> {item.name} ({item.quantity})</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600"><strong>Preço:</strong> {formatPrice(Number(item.price) * Number(item.quantity))}</p>
+                    </div>
+                  </div>
+                ))}
+                <p className="text-lg font-semibold text-gray-800 mt-2">Total: {formatPrice(totalPriceAll)}</p>
+              </>
+            )}
+          </div>
+
+          <div className="flex flex-col items-center mt-4 space-y-2">
+            
+            <Button onClick={() => setShowModal(true)} className="px-6 py-2 w-full text-lg bg-primary hover:bg-primary-dark text-white font-semibold rounded-md">
+              Confirmar Resumo da Compra
             </Button>
-            <Button onClick={() => setShowModal(false)} className="ml-4 bg-gray-300 text-gray-700 px-4 py-2 rounded-md">
-              Cancelar
+
+            <Button onClick={() => handleStepChange(1, "Endereço de Entrega")} className="px-6 py-2 w-full text-lg bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-md">
+              Voltar ao Endereço
             </Button>
           </div>
-        </Modal>
+        </div>
       )}
+
+      {useStore.stepCart === 3 && address && (
+        <div className="flex flex-col gap-4">
+          <StepHeader
+            step={3}
+            title="Passo 3: Aguardando Pagamento"
+            description="Realize o pagamento para concluir a compra."
+          />
+          <Checkout />
+        </div>
+      )}
+    </div>
+  </>
+)}
+
+      {useStore.onCheckout === "success" && <OrderCompleted />}
+
+     
+
+      {showModal && (
+  <Modal
+    items={useStore.cart.map(item => ({
+      name: item.name,
+      price: item.price!,
+      quantity: item.quantity!,
+    }))}
+    total={totalPriceAll}
+    onConfirm={() => {
+      useStore.setStepCart(3);
+      setShowModal(false);
+    }}
+    onCancel={() => setShowModal(false)}
+  />
+)}
     </section>
   );
 }

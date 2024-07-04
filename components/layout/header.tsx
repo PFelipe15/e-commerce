@@ -39,22 +39,22 @@ const Header: React.FC = () => {
           <UserNav />
         </div>
       </div>
-      <div className="bg-primary text-white py-2 flex justify-center items-center space-x-4">
+      <div className="bg-primary hidden  text-white py-2 md:flex justify-center items-center space-x-4">
         <div className="flex items-center">
           <Truck className="mr-1" />
-          <span>Fazemos entrega</span>
+          <span cassName = "text-xs " >Fazemos entrega</span>
         </div>
         <div className="flex items-center">
           <Clock className="mr-1" />
-          <span>Horário: 9h - 18h</span>
+          <span cassName = "text-xs " >Horário: 9h - 18h</span>
         </div>
         <div className="flex items-center">
           <HelpCircle className="mr-1" />
-          <span>Atendimento ao Cliente 24/7</span>
+          <span cassName = "text-xs " >Atendimento ao Cliente 24/7</span>
         </div>
         <div className="flex items-center">
           <Package className="mr-1" />
-          <span>Envio Grátis em Pedidos Acima de R$100</span>
+          <span cassName = "text-xs " >Envio Grátis em Pedidos Acima de R$100</span>
         </div>
       </div>
     </header>
