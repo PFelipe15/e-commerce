@@ -42,19 +42,19 @@ const Header: React.FC = () => {
       <div className="bg-primary hidden  text-white py-2 md:flex justify-center items-center space-x-4">
         <div className="flex items-center">
           <Truck className="mr-1" />
-          <span cassName = "text-xs " >Fazemos entrega</span>
+          <span> Fazemos entrega</span>
         </div>
         <div className="flex items-center">
           <Clock className="mr-1" />
-          <span cassName = "text-xs " >Horário: 9h - 18h</span>
+          <span> Horário: 9h - 18h</span>
         </div>
         <div className="flex items-center">
           <HelpCircle className="mr-1" />
-          <span cassName = "text-xs " >Atendimento ao Cliente 24/7</span>
+          <span> Atendimento ao Cliente 24/7</span>
         </div>
         <div className="flex items-center">
           <Package className="mr-1" />
-          <span cassName = "text-xs " >Envio Grátis em Pedidos Acima de R$100</span>
+          <span> Envio Grátis em Pedidos Acima de R$100</span>
         </div>
       </div>
     </header>

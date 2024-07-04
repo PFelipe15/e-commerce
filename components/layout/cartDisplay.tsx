@@ -61,7 +61,7 @@ export default function CartDrawer() {
     setEditHasAddress(true);
   };
 
-  const handleNewAddress = (address) => {
+  const handleNewAddress = (address:Address) => {
     localStorage.setItem("userAddress", JSON.stringify(address));
 
   }
