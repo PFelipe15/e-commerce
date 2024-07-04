@@ -249,7 +249,7 @@ export default function CartDrawer() {
                       </Button>
                     </div>
                   </Card>
-                  <Button className="px-6 py-2 w-full text-lg bg-primary hover:bg-primary-dark text-white font-semibold rounded-md" onClick={() => setNewAddress(true)}>
+                  <Button className="px-4 py-2 w-full text-lg bg-primary hover:bg-primary-dark text-white font-semibold rounded-md" onClick={() => setNewAddress(true)}>
                     Novo Endereço <FaMapMarker size={20} />
                   </Button>
                   <Button onClick={()=>{return useStore.setCheckout("cart");}} className="px-6 py-2 w-full text-lg bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-md">
